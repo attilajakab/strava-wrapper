@@ -6,33 +6,36 @@
     <div id="container">
       <Greeting v-bind:name="name" />
       <Login v-bind:name="name" />
+      <Activities v-if="name" />
     </div>
   </div>
 </template>
 
 <script>
-import AuthService from './services/AuthService';
+import { mapState } from 'vuex';
 
 import Greeting from './components/Greeting';
 import Login from './components/Login';
+import Activities from './components/Activities';
 
 export default {
   name: 'app',
   components: {
     Greeting,
-    Login
+    Login,
+    Activities
   },
-  data() {
-    return {
-      name: '',
-      user: null
-    };
+  mounted() {
+    this.$store.dispatch('getUser');
   },
-  async mounted() {
-    const { data: user } = await AuthService.getUser();
-    if (Object.keys(user).length !== 0) {
-      this.name = `${user.firstname} ${user.lastname}`;
-      this.user = user;
+  computed: {
+    ...mapState(['user']),
+    name: function() {
+      if (Object.keys(this.user).length !== 0) {
+        return `${this.user.firstname} ${this.user.lastname}`;
+      }
+
+      return '';
     }
   }
 };
