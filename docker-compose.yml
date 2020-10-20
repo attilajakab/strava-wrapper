@@ -1,33 +1,36 @@
 version: "3"
 
 services:
-    client:
-        container_name: client
-        build: ./client
-        ports:
-            - "9000:8080"
-        volumes: 
-            - ./client:/app
+  client:
+    container_name: client
+    build: ./client
+    ports:
+      - "9000:8080"
+    volumes:
+      - ./client:/app
 
-    server:
-        container_name: server
-        build: ./server
-        env_file: .env
-        ports:
-            - "${SERVER_PORT}:${SERVER_PORT}"
-        volumes:
-            - ./server:/app
-        depends_on: 
-            - server-database
+  server:
+    container_name: server
+    build: ./server
+    env_file: .env
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    volumes:
+      - ./server:/app
+    depends_on:
+      - server-database
 
-    server-database:
-        container_name: server-database
-        image: mongo
-        ports:
-            - 9002:27017
-        volumes:
-            - ./db:/data
-        environment: 
-            - MONGO_INITDB_ROOT_USERNAME=root
-            - MONGO_INITDB_ROOT_PASSWORD=password
-            - MONGO_INITDB_DATABASE=strava
+  server-database:
+    container_name: server-database
+    image: mongo
+    ports:
+      - 9002:27017
+    volumes:
+      - mongodata:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=strava
+
+volumes:
+  mongodata:

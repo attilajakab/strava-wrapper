@@ -24,9 +24,12 @@ app.use(session({
   }
 }));
 
+// Connect to database
 database.connect((err) => {
-  console.log(err);
-  process.exit(1);
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
 });
 
 // Routes
