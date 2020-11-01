@@ -2,7 +2,7 @@
   <div class="activites">
     <h1 class="activities-title">Activities...</h1>
     <div class="activities-container">
-      <Activity
+      <ActivityListItem
         v-for="(activity, index) in activities"
         :key="index"
         :activity="activity"
@@ -14,15 +14,15 @@
 <script>
 import { mapState } from 'vuex';
 
-import Activity from './Activity';
+import ActivityListItem from './ActivityListItem';
 
 export default {
   name: 'Activities',
   components: {
-    Activity
+    ActivityListItem
   },
   mounted() {
-    this.$store.dispatch('getActivities');
+    this.$store.dispatch('getLatestActivities');
   },
   computed: {
     ...mapState(['activities'])

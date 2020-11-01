@@ -8,8 +8,7 @@
  * @param {number} days Integer
  * @returns {number} The timestmap
  */
-module.exports.getEpochTimeStamp = (operator = null, days = null) => {
-  let date = new Date();
+module.exports.getEpochTimeStamp = (date = new Date(), operator = null, days = null) => {
   if (operator && days) {
     date = new Date(date.getFullYear(), date.getMonth(), eval(`date.getDate() ${operator} ${days}`));
   }

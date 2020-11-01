@@ -1,8 +1,11 @@
 <template>
   <div class="activity">
     <hr />
+    <div>
+      <router-link :to="`/activity/${activity._id}`">Open</router-link>
+    </div>
     <p class="activity-date">
-      <small>{{ activity.start_date }}</small>
+      <small>{{ activity.start_date | convertTimestampToDate }}</small>
     </p>
     <p class="activity-distance">
       <span class="activity-distance-value">{{
@@ -17,14 +20,6 @@
 <script>
 export default {
   name: 'Activity',
-  props: ['activity'],
-  filters: {
-    convertMetersToKilometers(value) {
-      return value && value > 0 ? value / 1000 : 0;
-    },
-    roundToDecimals(value, numberOfDecimals = 2) {
-      return value.toFixed(numberOfDecimals);
-    }
-  }
+  props: ['activity']
 };
 </script>

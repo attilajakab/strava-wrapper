@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
     strava.athlete.get({
       access_token: req.session.token
     }, (err, data) => {
+      req.session.userId = data.id;
       res.send(data);
     });
   } else {

@@ -1,24 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const stravaService = require('../services/strava-servive');
-const getEpochTimeStamp = require('../helpers/date').getEpochTimeStamp;
+const stravaService = require('../services/strava');
 
-router.get('/', async (req, res) => {
+router.use((req, res, next) => {
   if (!req.session.token) {
     res.send({});
     return;
   }
+  next();
+});
 
-  const after = req.query.hasOwnProperty('after') ? 
-    req.query.after : 
-    getEpochTimeStamp('-', 14);
-
-  const data = await stravaService.getAllActivities({
-    accessToken: req.session.token,
-    after
-  });
+router.get('/', async (req, res) => {
+  const data = await stravaService.getActivities(
+    req.query, 
+    req.session.userId
+  );
 
   res.send(data);
+});
+
+router.get('/latest', async (req, res) => {
+  const data = await stravaService.getLatestActivities({
+    accessToken: req.session.token,
+  }, req.session.userId);
+
+  res.send(data);
+});
+
+router.get('/:id', async (req, res) => {
+  const data = await stravaService.getActivity(req.params.id);
+  res.send(data[0]);
 });
 
 module.exports = router;
